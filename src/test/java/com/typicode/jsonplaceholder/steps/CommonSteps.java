@@ -3,7 +3,6 @@ package com.typicode.jsonplaceholder.steps;
 import com.typicode.jsonplaceholder.helpers.RequestHelpers;
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.Before;
-import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.everit.json.schema.Schema;
@@ -11,16 +10,15 @@ import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class CommonSteps {
 
@@ -101,7 +99,7 @@ public class CommonSteps {
 
     @Then("the results array contains {int} elements")
     public static void verifyNumberOfResultsArrayElements(int numElements) {
-        JSONArray results = new JSONArray (response.body());
+        JSONArray results = new JSONArray(response.body());
         assertEquals(numElements, results.length());
     }
 
@@ -126,7 +124,7 @@ public class CommonSteps {
         Map<String, String> expectedBody = dataTable.subTable(1, 0).asMap(String.class, String.class);
         JSONObject actual = new JSONObject(response.body());
         assertEquals(expectedBody.keySet(), actual.keySet());
-        expectedBody.forEach((k,v) -> assertEquals(expectedBody.get(k), actual.get(k).toString()));
+        expectedBody.forEach((k, v) -> assertEquals(expectedBody.get(k), actual.get(k).toString()));
     }
 
     @Then("the response body is an empty JSON object")
