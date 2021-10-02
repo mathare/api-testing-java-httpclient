@@ -176,3 +176,11 @@ Feature: Posts Endpoint
       | 101 |
       | -1  |
 
+  Scenario Outline: Update post with invalid ID - post #<ID>
+    When I make a PUT request with an empty body to the Posts endpoint with a path parameter of <ID>
+    Then the response has a status code of 500
+    Examples:
+      | ID  |
+      | 0   |
+      | 101 |
+      | -1  |
