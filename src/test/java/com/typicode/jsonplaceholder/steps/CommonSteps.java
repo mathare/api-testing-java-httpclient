@@ -55,6 +55,7 @@ public class CommonSteps {
         response = RequestHelpers.sendGetRequestTo(endpoints.get(endpoint));
         responses.add(response);
     }
+
     @When("^I make a GET request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with a path parameter of (-?\\d+)$")
     public static void makeGetRequestWithPathParameter(String endpoint, int pathParam) {
         response = RequestHelpers.sendGetRequestTo(endpoints.get(endpoint) + "/" + pathParam);
@@ -78,6 +79,13 @@ public class CommonSteps {
         response = RequestHelpers.sendDeleteRequestTo(endpoints.get(endpoint));
         responses.add(response);
     }
+
+    @When("^I make a DELETE request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with a path parameter of (-?\\d+)$")
+    public static void makeDeleteRequestWithPathParameter(String endpoint, int pathParam) {
+        response = RequestHelpers.sendDeleteRequestTo(endpoints.get(endpoint) + "/" + pathParam);
+        responses.add(response);
+    }
+
 
     @Then("the response has a status code of {int}")
     public static void verifyResponseStatusCode(int code) {

@@ -65,4 +65,24 @@ Feature: Posts Endpoint
     And the response body matches the following
       | key | value |
       | id  | 101   |
-  
+
+  Scenario: Delete post
+  # If this was a real API supported by a working data source I would make a GET request to the Posts endpoint after
+  # deleting the post to ensure that the total number of posts has decreased and that post 1 had been deleted
+    When I make a DELETE request to the Posts endpoint with a path parameter of 1
+    Then the response has a status code of 200
+    And the response body is an empty JSON object
+
+  Scenario Outline: Delete post with invalid ID - post #<ID>
+  # As this is a fake API without an underlying data source that updates based on the API requests, a delete request
+  # returns a success response regardless of the post ID passed in via the path parameters. This should raise an error
+  # for a real API
+    When I make a DELETE request to the Posts endpoint with a path parameter of <ID>
+    Then the response has a status code of 200
+    And the response body is an empty JSON object
+    Examples:
+      | ID  |
+      | 0   |
+      | 101 |
+      | -1  |
+
