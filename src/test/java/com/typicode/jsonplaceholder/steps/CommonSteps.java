@@ -59,7 +59,7 @@ public class CommonSteps {
     }
 
     @When("^I make a (GET|DELETE) request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with a path parameter of (-?\\d+)$")
-    public static void makeRequestWithPathParameter(String requestType, String endpoint, int pathParam) {
+    public static void makeRequest(String requestType, String endpoint, int pathParam) {
         response = requestType.equals("GET") ?
                 RequestHelpers.sendGetRequestTo(endpoints.get(endpoint) + "/" + pathParam) :
                 RequestHelpers.sendDeleteRequestTo(endpoints.get(endpoint) + "/" + pathParam);
@@ -93,7 +93,7 @@ public class CommonSteps {
     }
 
     @When("^I make a (POST|PUT) request with the following body to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with a path parameter of (-?\\d+)$")
-    public static void makeRequestWithEmptyBody(String requestType, String endpoint, int pathParam, DataTable dataTable) {
+    public static void makeRequestWithBody(String requestType, String endpoint, int pathParam, DataTable dataTable) {
         Map<String, String> requestBodyMap = dataTable.subTable(1, 0).asMap(String.class, String.class);
         JSONObject requestBody = new JSONObject(requestBodyMap);
         response = requestType.equals("POST") ?
