@@ -57,6 +57,11 @@ public class CommonSteps {
         response = RequestHelpers.sendGetRequestTo(endpoints.get(endpoint));
         responses.add(response);
     }
+    @When("^I make a GET request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with a path parameter of (\\d+)$")
+    public static void makeGetRequestWithPathParameter(String endpoint, int pathParam) {
+        response = RequestHelpers.sendGetRequestTo(endpoints.get(endpoint) + "/" + pathParam);
+        responses.add(response);
+    }
     @Then("the response has a status code of {int}")
     public static void verifyResponseStatusCode(int code) {
         assertEquals(code, response.statusCode());
@@ -82,10 +87,19 @@ public class CommonSteps {
     }
 
     @Then("the response body matches the {string} expected response")
-    public static void verifyResponseBodyAgainstExpectedResponse(String type) throws IOException {
-        String filename = EXPECTED_RESPONSES_DIR + type.replaceAll(" ", "") + "Response.json";
+    public static void verifyResponseBodyAgainstExpectedResponse(String expectedResponse) throws IOException {
+        String filename = EXPECTED_RESPONSES_DIR + expectedResponse.replaceAll(" ", "") + "Response.json";
         String json = Files.readString(new File(filename).toPath());
         assertEquals(json.replace("\r", ""), response.body());
+    }
+
+    @Then("^the response body matches the (\\d+).{2} post in the \"(.*)\" expected response$")
+    public static void verifyResponseBodyAgainstPartOfExpectedResponse(int index, String expectedResponse) throws IOException {
+        String filename = EXPECTED_RESPONSES_DIR + expectedResponse.replaceAll(" ", "") + "Response.json";
+        String json = Files.readString(new File(filename).toPath());
+        JSONObject expected = new JSONArray(json).getJSONObject(index - 1);
+        JSONObject actual = new JSONObject(response.body());
+        assertEquals(expected.toString(), actual.toString());
     }
 
 
