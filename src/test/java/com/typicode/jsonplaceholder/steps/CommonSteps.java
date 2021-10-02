@@ -102,5 +102,13 @@ public class CommonSteps {
         assertEquals(expected.toString(), actual.toString());
     }
 
+    @Then("the response body matches the following")
+    public static void verifyResponseBodyAgainstDataTable(DataTable dataTable) {
+        Map<String, String> expectedBody = dataTable.subTable(1, 0).asMap(String.class, String.class);
+        JSONObject actual = new JSONObject(response.body());
+        assertEquals(expectedBody.keySet(), actual.keySet());
+        expectedBody.forEach((k,v) -> assertEquals(expectedBody.get(k), actual.get(k).toString()));
+    }
+
 
 }
