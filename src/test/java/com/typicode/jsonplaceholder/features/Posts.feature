@@ -39,3 +39,12 @@ Feature: Posts Endpoint
     """
     And the "userId" field in the response body has a value of 1
 
+  Scenario Outline: Get post with invalid ID - post #<ID>
+    When I make a GET request to the Posts endpoint with a path parameter of <ID>
+    Then the response has a status code of 404
+    And the response body is an empty JSON object
+    Examples:
+      | ID  |
+      | 0   |
+      | 101 |
+      | -1  |

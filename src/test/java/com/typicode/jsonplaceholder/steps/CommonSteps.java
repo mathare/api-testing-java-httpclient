@@ -57,7 +57,7 @@ public class CommonSteps {
         response = RequestHelpers.sendGetRequestTo(endpoints.get(endpoint));
         responses.add(response);
     }
-    @When("^I make a GET request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with a path parameter of (\\d+)$")
+    @When("^I make a GET request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with a path parameter of (-?\\d+)$")
     public static void makeGetRequestWithPathParameter(String endpoint, int pathParam) {
         response = RequestHelpers.sendGetRequestTo(endpoints.get(endpoint) + "/" + pathParam);
         responses.add(response);
@@ -108,6 +108,11 @@ public class CommonSteps {
         JSONObject actual = new JSONObject(response.body());
         assertEquals(expectedBody.keySet(), actual.keySet());
         expectedBody.forEach((k,v) -> assertEquals(expectedBody.get(k), actual.get(k).toString()));
+    }
+
+    @Then("the response body is an empty JSON object")
+    public static void verifyResponseBodyIsEmptyJSONObject() {
+        assertEquals(new JSONObject().toString(), response.body());
     }
 
 
