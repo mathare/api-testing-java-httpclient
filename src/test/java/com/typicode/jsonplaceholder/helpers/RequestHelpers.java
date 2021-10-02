@@ -5,6 +5,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class RequestHelpers {
 
@@ -63,5 +66,18 @@ public class RequestHelpers {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static String buildQueryParamsString(Map<String, String> params) {
+        StringBuilder paramString = new StringBuilder();
+        if (params.size() > 0) {
+            List<String> keys = new ArrayList<>(params.keySet());
+            for (String key : keys) {
+                paramString.append("&").append(key).append("=").append(params.get(key));
+            }
+            //Strip off initial &=
+            paramString.substring(2);
+        }
+        return "?" + paramString;
     }
 }

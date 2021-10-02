@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -102,6 +103,13 @@ public class CommonSteps {
         responses.add(response);
     }
 
+    @When("^I make a GET request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with an? \"(.*)\" query parameter of (.*)$")
+    public static void makeGetRequestWithQueryParameter(String endpoint, String key, String value) {
+        Map<String, String> params = new HashMap<>();
+        params.put(key, value);
+        response = RequestHelpers.sendGetRequestTo(endpoints.get(endpoint) + RequestHelpers.buildQueryParamsString(params));
+        responses.add(response);
+    }
 
     @Then("the response has a status code of {int}")
     public static void verifyResponseStatusCode(int code) {
@@ -156,5 +164,16 @@ public class CommonSteps {
         assertEquals(new JSONObject().toString(), response.body());
     }
 
-
+    @Then("the two response bodies are identical")
+    public static void verifyResponseBodiesMatch() {
+        String[] responseBodies = {responses.get(responses.size() - 2).body(), responses.get(responses.size() - 1).body()};
+        for (int i = 0; i < responseBodies.length; i++) {
+            if (responseBodies[i].startsWith("[")) {
+                responseBodies[i] = new JSONArray(responseBodies[i]).get(0).toString();
+            } else {
+                responseBodies[i] = new JSONObject((responseBodies[i])).toString();
+            }
+        }
+        assertEquals(responseBodies[0], responseBodies[1]);
+    }
 }

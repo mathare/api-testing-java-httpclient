@@ -184,3 +184,9 @@ Feature: Posts Endpoint
       | 0   |
       | 101 |
       | -1  |
+
+  Scenario: Path parameter equivalent to id query parameter
+    When I make a GET request to the Posts endpoint with a path parameter of 1
+    And I make a GET request to the Posts endpoint with an "id" query parameter of 1
+    Then the two response bodies are identical
+
