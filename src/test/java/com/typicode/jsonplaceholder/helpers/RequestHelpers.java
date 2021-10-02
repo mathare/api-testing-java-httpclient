@@ -27,6 +27,7 @@ public class RequestHelpers {
     public static HttpResponse<String> sendPutRequestTo(String endpoint, String body) {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(body))
+                .header("Content-Type", "application/json")
                 .uri(URI.create(BASE_URL + endpoint))
                 .build();
         try {
@@ -40,6 +41,7 @@ public class RequestHelpers {
     public static HttpResponse<String> sendPostRequestTo(String endpoint, String body) {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(body))
+                .header("Content-Type", "application/json")
                 .uri(URI.create(BASE_URL + endpoint))
                 .build();
         try {

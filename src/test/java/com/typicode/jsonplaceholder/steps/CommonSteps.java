@@ -82,6 +82,15 @@ public class CommonSteps {
         responses.add(response);
     }
 
+    @When("^I make a (POST|PUT) request with the following body to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with a path parameter of (-?\\d+)$")
+    public static void makeRequestWithEmptyBody(String requestType, String endpoint, int pathParam, DataTable dataTable) {
+        Map<String, String> requestBodyMap = dataTable.subTable(1, 0).asMap(String.class, String.class);
+        JSONObject requestBody = new JSONObject(requestBodyMap);
+        response = requestType.equals("POST") ?
+                RequestHelpers.sendPostRequestTo(endpoints.get(endpoint) + "/" + pathParam, requestBody.toString()) :
+                RequestHelpers.sendPutRequestTo(endpoints.get(endpoint) + "/" + pathParam, requestBody.toString());
+        responses.add(response);
+    }
 
 
     @Then("the response has a status code of {int}")

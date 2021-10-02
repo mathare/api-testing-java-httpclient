@@ -73,6 +73,55 @@ Feature: Posts Endpoint
     Then the response has a status code of 200
     And the response body is an empty JSON object
 
+  Scenario: Update post with empty request body
+  # This API isn't backed by a working data source so there is no follow up GET request to confirm that the
+  # post has been properly updated in the back end
+    When I make a PUT request with an empty body to the Posts endpoint with a path parameter of 1
+    Then the response has a status code of 200
+    And the response body matches the following
+      | key | value |
+      | id  | 1     |
+
+  Scenario: Update post with partial request body
+    When I make a PUT request with the following body to the Posts endpoint with a path parameter of 1
+      | key   | value                  |
+      | title | Updated Post Title     |
+      | body  | Updated post body text |
+    Then the response has a status code of 200
+    And the response body matches the following
+      | key   | value                  |
+      | id    | 1                      |
+      | title | Updated Post Title     |
+      | body  | Updated post body text |
+
+  Scenario: Update post with full request body
+    When I make a PUT request with the following body to the Posts endpoint with a path parameter of 1
+      | key    | value                  |
+      | title  | Updated Post Title     |
+      | body   | Updated post body text |
+      | userId | 5                      |
+    Then the response has a status code of 200
+    And the response body matches the following
+      | key    | value                  |
+      | id     | 1                      |
+      | title  | Updated Post Title     |
+      | body   | Updated post body text |
+      | userId | 5                      |
+
+  Scenario: Update post with invalid fields in request body
+  # As this API isn't linked to a working data source there is no validation of the field names passed in via the
+  # request body. If this were a fully working API I would expect this to raise an error
+    When I make a PUT request with the following body to the Posts endpoint with a path parameter of 1
+      | key   | value     |
+      | key_1 | New value |
+      | key_2 | New value |
+    Then the response has a status code of 200
+    And the response body matches the following
+      | key   | value     |
+      | id    | 1         |
+      | key_1 | New value |
+      | key_2 | New value |
+
   Scenario Outline: Delete post with invalid ID - post #<ID>
   # As this is a fake API without an underlying data source that updates based on the API requests, a delete request
   # returns a success response regardless of the post ID passed in via the path parameters. This should raise an error
