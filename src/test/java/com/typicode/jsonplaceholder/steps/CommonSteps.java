@@ -93,7 +93,7 @@ public class CommonSteps {
         assertEquals(json.replace("\r", ""), response.body());
     }
 
-    @Then("^the response body matches the (\\d+).{2} post in the \"(.*)\" expected response$")
+    @Then("^the response body matches the (\\d+).{2} (?:post|comment|album|todo|user) in the \"(.*)\" expected response$")
     public static void verifyResponseBodyAgainstPartOfExpectedResponse(int index, String expectedResponse) throws IOException {
         String filename = EXPECTED_RESPONSES_DIR + expectedResponse.replaceAll(" ", "") + "Response.json";
         String json = Files.readString(new File(filename).toPath());
