@@ -48,3 +48,21 @@ Feature: Posts Endpoint
       | 0   |
       | 101 |
       | -1  |
+
+  Scenario: Delete request to all posts endpoint raises error
+    When I make a DELETE request to the Posts endpoint
+    Then the response has a status code of 404
+    And the response body is an empty JSON object
+
+  Scenario: Put request to all posts endpoint raises error
+    When I make a PUT request to the Posts endpoint
+    Then the response has a status code of 404
+    And the response body is an empty JSON object
+
+  Scenario: Post request to all posts endpoint creates new post
+    When I make a POST request to the Posts endpoint
+    Then the response has a status code of 201
+    And the response body matches the following
+      | key | value |
+      | id  | 101   |
+  
