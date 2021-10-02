@@ -50,41 +50,38 @@ public class CommonSteps {
         responses = new ArrayList<>();
     }
 
-    @When("^I make a GET request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint$")
-    public static void makeGetRequest(String endpoint) {
-        response = RequestHelpers.sendGetRequestTo(endpoints.get(endpoint));
+    @When("^I make a (GET|DELETE) request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint$")
+    public static void makeRequest(String requestType, String endpoint) {
+        response = requestType.equals("GET") ?
+                RequestHelpers.sendGetRequestTo(endpoints.get(endpoint)) :
+                RequestHelpers.sendDeleteRequestTo((endpoints.get(endpoint)));
         responses.add(response);
     }
 
-    @When("^I make a GET request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with a path parameter of (-?\\d+)$")
-    public static void makeGetRequestWithPathParameter(String endpoint, int pathParam) {
-        response = RequestHelpers.sendGetRequestTo(endpoints.get(endpoint) + "/" + pathParam);
+    @When("^I make a (GET|DELETE) request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with a path parameter of (-?\\d+)$")
+    public static void makeRequestWithPathParameter(String requestType, String endpoint, int pathParam) {
+        response = requestType.equals("GET") ?
+                RequestHelpers.sendGetRequestTo(endpoints.get(endpoint) + "/" + pathParam) :
+                RequestHelpers.sendDeleteRequestTo(endpoints.get(endpoint) + "/" + pathParam);
         responses.add(response);
     }
 
-    @When("^I make a PUT request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint$")
-    public static void makePutRequestWithEmptyBody(String endpoint) {
-        response = RequestHelpers.sendPutRequestTo(endpoints.get(endpoint), "{}");
+    @When("^I make a (POST|PUT) request with an empty body to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint$")
+    public static void makeRequestWithEmptyBody(String requestType, String endpoint) {
+        response = requestType.equals("POST") ?
+                RequestHelpers.sendPostRequestTo(endpoints.get(endpoint), "{}") :
+                RequestHelpers.sendPutRequestTo(endpoints.get(endpoint), "{}");
         responses.add(response);
     }
 
-    @When("^I make a POST request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint$")
-    public static void makePostRequestWithEmptyBody(String endpoint) {
-        response = RequestHelpers.sendPostRequestTo(endpoints.get(endpoint), "{}");
+    @When("^I make a (POST|PUT) request with an empty body to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with a path parameter of (-?\\d+)$")
+    public static void makeRequestWithEmptyBody(String requestType, String endpoint, int pathParam) {
+        response = requestType.equals("POST") ?
+                RequestHelpers.sendPostRequestTo(endpoints.get(endpoint) + "/" + pathParam, "{}") :
+                RequestHelpers.sendPutRequestTo(endpoints.get(endpoint) + "/" + pathParam, "{}");
         responses.add(response);
     }
 
-    @When("^I make a DELETE request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint$")
-    public static void makeDeleteRequest(String endpoint) {
-        response = RequestHelpers.sendDeleteRequestTo(endpoints.get(endpoint));
-        responses.add(response);
-    }
-
-    @When("^I make a DELETE request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with a path parameter of (-?\\d+)$")
-    public static void makeDeleteRequestWithPathParameter(String endpoint, int pathParam) {
-        response = RequestHelpers.sendDeleteRequestTo(endpoints.get(endpoint) + "/" + pathParam);
-        responses.add(response);
-    }
 
 
     @Then("the response has a status code of {int}")
