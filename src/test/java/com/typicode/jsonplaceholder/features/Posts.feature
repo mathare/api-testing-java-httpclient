@@ -122,6 +122,47 @@ Feature: Posts Endpoint
       | key_1 | New value |
       | key_2 | New value |
 
+  Scenario: Create new post with partial request body
+  # New posts will always be created with the same ID (101) as there is no database behind this API
+    When I make a POST request with the following body to the Posts endpoint
+      | key   | value              |
+      | title | New Post Title     |
+      | body  | New post body text |
+    Then the response has a status code of 201
+    And the response body matches the following
+      | key   | value              |
+      | id    | 101                |
+      | title | New Post Title     |
+      | body  | New post body text |
+
+  Scenario: Create new post with full request body
+    When I make a POST request with the following body to the Posts endpoint
+      | key    | value              |
+      | title  | New Post Title     |
+      | body   | New post body text |
+      | userId | 3                  |
+    Then the response has a status code of 201
+    And the response body matches the following
+      | key    | value              |
+      | id     | 101                |
+      | title  | New Post Title     |
+      | body   | New post body text |
+      | userId | 3                  |
+
+  Scenario: Create new post with invalid fields in request body
+  # As there is no data source behind this API, POST requests are not validated against the data schema so invalid
+  # fields can be passed in the request body. For a real API this would throw an error
+    When I make a POST request with the following body to the Posts endpoint
+      | key   | value     |
+      | key_1 | New value |
+      | key_2 | New value |
+    Then the response has a status code of 201
+    And the response body matches the following
+      | key   | value     |
+      | id    | 101       |
+      | key_1 | New value |
+      | key_2 | New value |
+
   Scenario Outline: Delete post with invalid ID - post #<ID>
   # As this is a fake API without an underlying data source that updates based on the API requests, a delete request
   # returns a success response regardless of the post ID passed in via the path parameters. This should raise an error
