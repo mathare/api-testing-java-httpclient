@@ -244,3 +244,32 @@ Feature: Posts Endpoint
       | photos | MultiplePhotos | 5000 | AllPhotos |
       | todos  | MultipleToDos  | 200  | AllToDos  |
       | users  | MultipleUsers  | 10   | AllUsers  |
+
+  Scenario Outline: Invalid post ID in nested parameters - <ID>
+    When I make a GET request to the Posts endpoint with nested path parameters of <ID>/comments
+    Then the response has a status code of 200
+    And the response body follows the "MultipleComments" JSON schema
+    And the results array contains 0 elements
+    Examples:
+      | ID  |
+      | 0   |
+      | 101 |
+      | -1  |
+
+  Scenario: Non-existent nested endpoint parameter
+    When I make a GET request to the Posts endpoint with nested path parameters of 1/dummy
+    Then the response has a status code of 404
+    And the response body is an empty JSON object
+
+  Scenario Outline: Invalid post ID and endpoint in nested parameters
+    When I make a GET request to the Posts endpoint with nested path parameters of <ID>/albums
+    Then the response has a status code of 200
+    And the response body follows the "MultipleAlbums" JSON schema
+    And the results array contains 100 elements
+    And the response body matches the "AllAlbums" expected response
+    Examples:
+      | ID  |
+      | 0   |
+      | 101 |
+      | -1  |
+
