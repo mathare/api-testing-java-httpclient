@@ -116,6 +116,7 @@ public class CommonSteps {
         response = RequestHelpers.sendGetRequestTo(endpoints.get(endpoint) + "/" + nestedParam);
         responses.add(response);
     }
+
     @Then("the response has a status code of {int}")
     public static void verifyResponseStatusCode(int code) {
         assertEquals(code, response.statusCode());
