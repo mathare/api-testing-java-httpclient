@@ -208,12 +208,12 @@ Feature: Posts Endpoint
       | 101    |
       | -1     |
 
-    Scenario: Filter by invalid query parameter
+  Scenario: Filter by invalid query parameter
     # As the API isn't backed by a working database there is no validation of the query parameter names, meaning
     # invalid query params return the full dataset for the chosen endpoint. For a real API this should return an
     # error response
-      When I make a GET request to the Posts endpoint with a "dummy" query parameter of 1
-      Then the response has a status code of 200
-      And the response body follows the "MultiplePosts" JSON schema
-      And the results array contains 100 elements
-      And the response body matches the "AllPosts" expected response
+    When I make a GET request to the Posts endpoint with a "dummy" query parameter of 1
+    Then the response has a status code of 200
+    And the response body follows the "MultiplePosts" JSON schema
+    And the results array contains 100 elements
+    And the response body matches the "AllPosts" expected response
