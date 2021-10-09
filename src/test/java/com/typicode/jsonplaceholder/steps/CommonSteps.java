@@ -111,6 +111,11 @@ public class CommonSteps {
         responses.add(response);
     }
 
+    @When("^I make a GET request to the (Posts|Comments|Albums|Photos|ToDos|Users) endpoint with nested path parameters of (-?\\d+\\/\\w+)$")
+    public static void makeRequestWithNestedParameters(String endpoint, String nestedParam) {
+        response = RequestHelpers.sendGetRequestTo(endpoints.get(endpoint) + "/" + nestedParam);
+        responses.add(response);
+    }
     @Then("the response has a status code of {int}")
     public static void verifyResponseStatusCode(int code) {
         assertEquals(code, response.statusCode());

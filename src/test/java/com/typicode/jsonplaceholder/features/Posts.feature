@@ -217,3 +217,8 @@ Feature: Posts Endpoint
     And the response body follows the "MultiplePosts" JSON schema
     And the results array contains 100 elements
     And the response body matches the "AllPosts" expected response
+
+  Scenario: Query parameter and nested path parameter equivalence across endpoints
+    When I make a GET request to the Posts endpoint with a "userId" query parameter of 1
+    And I make a GET request to the Users endpoint with nested path parameters of 1/posts
+    Then the two response bodies are identical
