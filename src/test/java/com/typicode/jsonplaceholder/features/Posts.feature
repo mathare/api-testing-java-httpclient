@@ -222,3 +222,10 @@ Feature: Posts Endpoint
     When I make a GET request to the Posts endpoint with a "userId" query parameter of 1
     And I make a GET request to the Users endpoint with nested path parameters of 1/posts
     Then the two response bodies are identical
+
+  Scenario: Valid nested path parameters
+    When I make a GET request to the Posts endpoint with nested path parameters of 1/comments
+    Then the response has a status code of 200
+    And the response body follows the "MultipleComments" JSON schema
+    And the results array contains 5 elements
+    And the response body matches the "PostComments" expected response
