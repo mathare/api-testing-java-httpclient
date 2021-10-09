@@ -231,6 +231,8 @@ Feature: Posts Endpoint
     And the response body matches the "PostComments" expected response
 
   Scenario Outline: Invalid nested path parameters - posts/1/<param>
+  # As the API uses a static data source rather than a database, calls that use some nested path parameters may return
+  # all the data for the nested endpoint. For an API backed by an operational DB these calls should return an error
     When I make a GET request to the Posts endpoint with nested path parameters of 1/<param>
     Then the response has a status code of 200
     And the response body follows the "<schema>" JSON schema
