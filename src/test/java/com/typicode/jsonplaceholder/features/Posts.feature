@@ -229,3 +229,16 @@ Feature: Posts Endpoint
     And the response body follows the "MultipleComments" JSON schema
     And the results array contains 5 elements
     And the response body matches the "PostComments" expected response
+
+  Scenario Outline: Invalid nested path parameters - posts/1/<param>
+    When I make a GET request to the Posts endpoint with nested path parameters of 1/<param>
+    Then the response has a status code of 200
+    And the response body follows the "<schema>" JSON schema
+    And the results array contains <num> elements
+    And the response body matches the "<body>" expected response
+    Examples:
+      | param  | schema         | num  | body      |
+      | albums | MultipleAlbums | 100  | AllAlbums |
+      | photos | MultiplePhotos | 5000 | AllPhotos |
+      | todos  | MultipleToDos  | 200  | AllToDos  |
+      | users  | MultipleUsers  | 10   | AllUsers  |
