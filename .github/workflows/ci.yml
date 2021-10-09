@@ -22,7 +22,7 @@ jobs:
         run: mvn test
 
       - name: Upload test report
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: Test_Report
