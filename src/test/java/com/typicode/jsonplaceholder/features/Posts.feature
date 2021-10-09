@@ -5,13 +5,13 @@ Feature: Posts Endpoint
     Then the response has a status code of 200
     And the response body follows the "MultiplePosts" JSON schema
     And the results array contains 100 elements
-    And the response body matches the "GetAllPosts" expected response
+    And the response body matches the "AllPosts" expected response
 
   Scenario: Verify single post against expected response in file
     When I make a GET request to the Posts endpoint with a path parameter of 1
     Then the response has a status code of 200
     And the response body follows the "SinglePost" JSON schema
-    And the response body matches the 1st post in the "GetAllPosts" expected response
+    And the response body matches the 1st post in the "AllPosts" expected response
 
   Scenario: Verify single post using datatable
     When I make a GET request to the Posts endpoint with a path parameter of 1
